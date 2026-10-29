@@ -1,8 +1,5 @@
 from tabulate import tabulate
 
-x = list(input("Enter proposition: "))
-x = [content for content in x if content != " "]
-    
 class Parser:
     def __init__(self, proposition):
         self.singles = []
@@ -31,59 +28,22 @@ class Parser:
                     break
             self.appewnd(self.propo[owpen + 1:clowse])
             self.propo = self.propo[:owpen] + [str(self.counter)] + self.propo[clowse + 1:]
-                
-    def negation(self):
+            
+    def operations(self, operand):
+        if operand == '-': o = 0
+        else: o = -1
         i = 0
-        while '-' in self.propo:
-            if self.propo[i] == '-':
-                self.appewnd(self.propo[i:i+2])
-                self.propo = self.propo[:i] + [str(self.counter)] + self.propo[i+2:]
-            i += 1
-    
-    def conjunction(self):
-        i = 0
-        while '^' in self.propo:
-            if self.propo[i] == '^':
-                self.appewnd(self.propo[i-1:i+2])
-                self.propo = self.propo[:i-1] + [str(self.counter)] + self.propo[i+2:]
-                continue
-            i += 1
-    
-    def disjunction(self):
-        i = 0
-        while 'v' in self.propo:
-            if self.propo[i] == 'v':
-                self.appewnd(self.propo[i-1:i+2])
-                self.propo = self.propo[:i-1] + [str(self.counter)] + self.propo[i+2:]
-                continue
-            i += 1
-        
-    def implication(self):
-        i = 0
-        while '>' in self.propo:
-            if self.propo[i] == '>':
-                self.appewnd(self.propo[i-1:i+2])
-                self.propo = self.propo[:i-1] + [str(self.counter)] + self.propo[i+2:]
-                continue
-            i += 1
-    
-    def equivalence(self):
-        i = 0
-        while '=' in self.propo:
-            if self.propo[i] == '=':
-                self.appewnd(self.propo[i-1:i+2])
-                self.propo = self.propo[:i-1] + [str(self.counter)] + self.propo[i+2:]
-                continue
+        while operand in self.propo:
+            if self.propo[i] == operand:
+                self.appewnd(self.propo[i+o:i+2])
+                self.propo = self.propo[:i+o] + [str(self.counter)] + self.propo[i+2:]
             i += 1
         
     def main(self):
         self.single()
         self.pthesis()
-        self.negation()
-        self.conjunction()
-        self.disjunction()
-        self.implication()
-        self.equivalence()
+        for operand in ['-', '^', 'v', '>', '=']:
+            self.operations(operand)
 
 class TruthTable(Parser):
     def __init__(self, proposition):
@@ -181,9 +141,10 @@ class TruthTable(Parser):
             for o in range(len(tlists)):
                 somelist.append(tlists[o][i])
             self.tlists.append(somelist)
-                
-    
-
+            
+x = list(input("Enter proposition: "))
+x = [content for content in x if content != " "]
+                    
 p = TruthTable(x)
 p.main2()
 print(tabulate(p.tlists))
