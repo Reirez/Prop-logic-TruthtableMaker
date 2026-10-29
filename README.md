@@ -4,5 +4,5 @@ the truth table of it and its sub compound proposition.
 Things to improve:
   code readability.
   Boolean inputs cause program to break.
-  Compound propositions inside parenthesis are not separated into
+  Compound propositions inside one parenthesis are not separated into
   separate compound propositions.
